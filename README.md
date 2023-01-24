@@ -7,7 +7,8 @@ Ce projet centralise les travaux fait sur la mise en place de modèle de scoring
 Les données sont issues de cette [compétition kaggle](https://www.kaggle.com/competitions/home-credit-default-risk).
 
 Dans ce repo, vous trouverez :
-- L'analyse univariée des données dans le notebook uniAnalysis.ipynb,
+- L'analyse univariée des données dans les notebooks uniAnalysis_[*].ipynb (séparés pour la clarté)
+- La concaténation de ces fichiers
 - L'EDA des fichiers combinés dans le notebook EDA.ipynb,
 - La mise en place et la comparaison des modèles de scoring,
 - Le feature engineering pour comprendre les modèles.

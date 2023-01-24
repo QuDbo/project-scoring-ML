@@ -1,10 +1,16 @@
 from IPython.display import Markdown as md
 import re
 import pandas as pd
+import numpy as np
+
+import plotly.graph_objects as go
+import plotly.express as px
+import plotly.figure_factory as ff
+import plotly.subplots as splt
 
 # Some utils function for the analysis, EDA or model
 
-def enumType(df):
+def enumType(df:pd.DataFrame)->dict:
     '''
     List type,s in dataframe df and count the number of var per types
     '''
@@ -26,7 +32,7 @@ def enumType(df):
     display(md(md2display1+"\n"+mdInterligne+"\n"+md2display2))
     return lgroup
 
-def infoVars(df,pattern=""):
+def infoVars(df:pd.DataFrame,pattern="")->None:
     '''
     Give informations of select var of a dataframe df filtered by the pattern (regex identification)
     '''
@@ -40,3 +46,82 @@ def infoVars(df,pattern=""):
     display(md(f"Taille de la DB : {df[lcol].shape}"))
     display(md(f"Taille (lignes complètes uniquement) : {df[lcol].dropna(how='any').shape}"))
     display(md(f"Taille (lignes partielles et complètes) : {df[lcol].dropna(how='all').shape}"))
+
+
+def affich_hist(df:pd.DataFrame, var:str, **kwargs)->None:
+    '''
+    To display hist distribution of a var depending of the target.
+    '''
+    title = kwargs.get("title","")
+    xtitle = kwargs.get("xtitle","")
+    ytitle = kwargs.get("ytitle","")
+    nbinsx = kwargs.get("nbinsx",100)
+    xlog,ylog = kwargs.get("log",("linear","linear"))
+
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(
+        x=df[df["TARGET"] == 0][var],
+        name="Target 0",
+        nbinsx=nbinsx
+    ))
+    fig.add_trace(go.Histogram(
+        x=df[df["TARGET"] == 1][var],
+        name="Target 1",
+        nbinsx=nbinsx
+    ))
+    fig.update_yaxes(type=ylog,title=ytitle)
+    fig.update_xaxes(type=xlog,title=xtitle)
+    fig.update_layout(title=title)
+    fig.show()
+
+def affich_cat(df:pd.DataFrame, var:str, **kwargs)->None:
+    '''
+    To display distribution of a category depending of the target
+    '''
+    title = kwargs.get("title","")
+    xtitle = kwargs.get("xtitle","")
+    ytitle = kwargs.get("ytitle","")
+    ylog = kwargs.get("ylog","linear")
+
+    fig=go.Figure()
+    fig.add_trace(go.Histogram(
+        x=df[df["TARGET"]==0][var],
+        name="Target 0"
+    ))
+    fig.add_trace(go.Histogram(
+        x=df[df["TARGET"]==1][var],
+        name="Target 1"
+    ))
+    fig.update_yaxes(type=ylog,title=ytitle)
+    fig.update_layout(title=title)
+    fig.show()
+
+
+
+def filtreSimple(df:pd.DataFrame,
+                    fh=None,fb=None,
+                    pattern=None,exclude=None
+                    )->pd.DataFrame :
+    df_modif = df.copy()
+    if ((pattern==None) or (pattern=='')):
+        print(f"Pattern non conforme\nReturning original dataframe")
+        return df
+    else:
+        labs = [lab for lab in df.columns if pattern in lab]
+        if exclude!=None:
+            remov = [lab for lab in df.columns if exclude in lab]
+            for rem in remov:
+                try:
+                    labs.remove(rem)
+                except:
+                    pass
+        for lab in labs:
+            if fb!=None:
+                ser=pd.Series(df_modif[lab])
+                ser.where(cond=(ser>=fb),other=np.nan,inplace=True)
+                df_modif[lab]=ser
+            if fh!=None:
+                ser=pd.Series(df_modif[lab])
+                ser.where(cond=(ser<=fh),other=np.nan,inplace=True)
+                df_modif[lab]=ser
+        return df_modif
