@@ -9,7 +9,7 @@ Les objectifs du projet était de fournir un outil permettant d'identifier la ca
 
 Les données sont issues de cette [compétition kaggle](https://www.kaggle.com/competitions/home-credit-default-risk). Elles se présentent en plusieurs fichiers organisés comme 
 
-![Organisation des données](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/organisation_donnees.png)
+<img src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/organisation_donnees.png" alt="Organisation des données" width="400"/>
 
 Dans ce repo, vous trouverez :
 - L'analyse univariée des données dans les notebooks uniAnalysis_[*].ipynb (séparés par fichier pour la clarté)
@@ -25,7 +25,7 @@ La mise en place des modèles et l'optimisation des hyper-paramètres se font av
 - Oversampling, undersampling,
 - Entrainement du modèle.
 
-![Pipeline](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/pipeline.png)
+<img alt="Pipeline" src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/pipeline.png" width="400"/>
 
 L'évaluation du modèle se fait à l'aide du $F_\beta$-score ($\beta = 2$). Une fonction métier prenant en compte la perte d'argent entrainée par une erreur peut aussi être mise en place :
 - Perte dues à un faux positif : Intérêt du prêt et perte du client
@@ -39,7 +39,7 @@ Différents algorithmes sont testés :
 
 La synthèse des performances est résumée ci-desssous
 
-![tableau-perf](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/tableau-perf.png) ![graph-perf](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/graph-perf.png)
+<img alt="tableau-perf" src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/tableau-perf.png" width="400"/> <img alt="graph-perf" src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/graph-perf.png" width="400"/>
 
 ### Impact des variables
 
@@ -47,4 +47,4 @@ Deux méthodes de feature importance sont testées :
 - Permutation Feature Importance - méthode globale
 - LIME - méthode locale
 
-![PFI](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/PFI.png) ![LIME](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/LIME.png)
+<img alt="PFI" src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/PFI.png" width="400"/> <img alt="LIME" src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/LIME.png" width="400"/>
