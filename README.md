@@ -47,4 +47,4 @@ Deux méthodes de feature importance sont testées :
 - Permutation Feature Importance - méthode globale
 - LIME - méthode locale
 
-![PFI](https://raw.githubusercontent.com/QuDbo/projet-scoring-ML/main/img/PFI.png) ![LIME](https://raw.githubusercontent.com/QuDbo/projet-scoring-ML/main/img/LIME.png)
+![PFI](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/PFI.png) ![LIME](https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/LIME.png)
