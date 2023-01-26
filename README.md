@@ -12,9 +12,9 @@ Les données sont issues de cette [compétition kaggle](https://www.kaggle.com/c
 <img src="https://raw.githubusercontent.com/QuDbo/project-scoring-ML/main/img/organisation_donnees.png" alt="Organisation des données" width="400"/>
 
 Dans ce repo, vous trouverez :
-- L'analyse univariée des données dans les notebooks uniAnalysis_[*].ipynb (séparés par fichier pour la clarté)
-- La concaténation de ces fichiers
-- L'EDA des fichiers combinés dans le notebook EDA.ipynb,
+- L'analyse des données du fichier application dans le notebooks traitement_appTrain.ipynb
+- Le traitement des fichiers annexe et la concaténation de ces fichiers au données application
+- L'EDA des fichiers combinés dans le notebook EDA_etat_final.ipynb,
 - La mise en place et la comparaison des modèles de scoring,
 - Le feature engineering pour comprendre les modèles.
 

@@ -125,3 +125,51 @@ def filtreSimple(df:pd.DataFrame,
                 ser.where(cond=(ser<=fh),other=np.nan,inplace=True)
                 df_modif[lab]=ser
         return df_modif
+
+def eboulis(acp,nCompMax):
+    scree = acp.explained_variance_ratio_*100
+    max_rank = len(scree)+1
+    screeValues = pd.DataFrame({'n':np.arange(len(scree))+1,"eigenvalue":scree}).to_numpy()
+    screeCumsum = pd.DataFrame({'n':np.arange(len(scree))+1,"cumulative sum":scree.cumsum()}).to_numpy()
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=screeValues[:,0],
+        y=screeValues[:,1],
+        name='Eigenvalues',
+    ))
+    fig.add_trace(go.Scatter(
+        x=screeCumsum[:,0],
+        y=screeCumsum[:,1],
+        name='Cumulative sum',
+    ))
+    # To be done, auto find the % of Eigenvalues for a fixed number of VP (or the inverse)
+    fig.add_trace(go.Scatter(
+        x=[0,65,65],
+        y=[97,97,0],
+        showlegend=False,
+        line=dict(dash='dash',color='black',width=.5),
+        marker=dict(size=.1)                        
+    ))
+    fig.update_layout(
+        title = 'Eboulis des valeurs propres',
+        xaxis=dict(
+            title='Rang',
+            titlefont_size=12,
+            tickfont_size=12,
+            range=[0,max_rank],
+        ),
+        yaxis=dict(
+            title="% d'inertie",
+            titlefont_size=12,
+            tickfont_size=12,
+            range=[0,100],
+        ),
+        width=800,
+        height=600,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)'
+    )
+    fig.update_xaxes(showline=True,linewidth=1,linecolor='black')
+    fig.update_yaxes(showline=True,linewidth=1,linecolor='black',gridcolor="lightgrey")
+    fig.show()
