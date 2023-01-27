@@ -126,11 +126,16 @@ def filtreSimple(df:pd.DataFrame,
                 df_modif[lab]=ser
         return df_modif
 
-def eboulis(acp,nCompMax):
+def plot_eboulis(acp,nCompMax):
     scree = acp.explained_variance_ratio_*100
     max_rank = len(scree)+1
     screeValues = pd.DataFrame({'n':np.arange(len(scree))+1,"eigenvalue":scree}).to_numpy()
     screeCumsum = pd.DataFrame({'n':np.arange(len(scree))+1,"cumulative sum":scree.cumsum()}).to_numpy()
+
+    ks = 100./nCompMax
+    annot = [(i+1,val) for i,val in enumerate(scree.cumsum()) if scree[i]>ks]
+    x_annot = annot[-1][0]
+    y_annot = annot[-1][1]
 
     fig = go.Figure()
     fig.add_trace(go.Bar(
@@ -145,12 +150,24 @@ def eboulis(acp,nCompMax):
     ))
     # To be done, auto find the % of Eigenvalues for a fixed number of VP (or the inverse)
     fig.add_trace(go.Scatter(
-        x=[0,65,65],
-        y=[97,97,0],
+        x=[0,x_annot,x_annot],
+        y=[y_annot,y_annot,0],
         showlegend=False,
         line=dict(dash='dash',color='black',width=.5),
         marker=dict(size=.1)                        
     ))
+    fig.add_annotation(
+        x=x_annot, y=y_annot,
+        text=f"{round(annot[-1][1],2)}%",
+        showarrow=True,
+        arrowhead=1
+    )
+    fig.add_annotation(
+        x=x_annot, y=ks,
+        text=f"Kaiser criteria : {round(ks,2)}%",
+        showarrow=True,
+        arrowhead=1
+    )
     fig.update_layout(
         title = 'Eboulis des valeurs propres',
         xaxis=dict(
@@ -164,6 +181,50 @@ def eboulis(acp,nCompMax):
             titlefont_size=12,
             tickfont_size=12,
             range=[0,100],
+        ),
+        width=800,
+        height=600,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)'
+    )
+    fig.update_xaxes(showline=True,linewidth=1,linecolor='black')
+    fig.update_yaxes(showline=True,linewidth=1,linecolor='black',gridcolor="lightgrey")
+    fig.show()
+
+def plot_projection(df_proj,axisRank,alpha=1):
+    d1,d2=axisRank
+    # affichage des points
+    df_0 = df_proj[df_proj['TARGET']==0]
+    df_1 = df_proj[df_proj['TARGET']==1]
+    fig=go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df_0.iloc[:,d1-1],
+        y=df_0.iloc[:,d2-1],
+        name='Target 0',
+        opacity=alpha,
+        mode='markers'
+    ))
+    fig.add_trace(go.Scatter(
+        x=df_1.iloc[:,d1-1],
+        y=df_1.iloc[:,d2-1],
+        name='Target 1',
+        opacity=alpha,
+        mode='markers'
+    ))
+    boundary = df_proj.iloc[:,d1-1:d2].abs().max(axis=1).max()*1.1
+    fig.update_layout(
+        title = f'Projection des valeurs sur les compostantes {d1} et {d2}',
+        xaxis=dict(
+            title=f'F{d1}',
+            titlefont_size=12,
+            tickfont_size=12,
+            range=[-boundary,boundary],
+        ),
+        yaxis=dict(
+            title=f"F{d2}",
+            titlefont_size=12,
+            tickfont_size=12,
+            range=[-boundary,boundary],
         ),
         width=800,
         height=600,
